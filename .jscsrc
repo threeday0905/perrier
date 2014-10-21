@@ -1,0 +1,22 @@
+{
+    "excludeFiles": ["**/*-xtpl.js", "node_modules/**"],
+    "preset": "jquery",
+
+    "validateIndentation": 4,
+    "validateQuoteMarks":  "'",
+
+    "requireSpaceBeforeBlockStatements":    true,
+    "disallowNewlineBeforeBlockStatements": true,
+    "requireBlocksOnNewline":               1,
+    "disallowPaddingNewlinesInBlocks":      true,
+
+    "requireMultipleVarDecl": null,
+
+    "safeContextKeyword": ["that", "self"],
+
+    "validateJSDoc": {
+        "checkParamNames":      true,
+        "checkRedundantParams": true,
+        "requireParamTypes":    true
+    }
+}
