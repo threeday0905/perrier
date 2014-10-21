@@ -32,5 +32,9 @@
     "jshint": "*",
     "mocha": "*",
     "rewire": "*"
+  },
+  "dependencies": {
+    "obj-parser": "~0.1.0",
+    "args-expect": "~0.2.1"
   }
 }
