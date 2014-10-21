@@ -1,0 +1,36 @@
+{
+  "name": "xconf",
+  "version": "0.1.0",
+  "description": "powerful config generator (based on json)",
+  "main": "index.js",
+  "scripts": {
+    "hint": "jscs {*.js,lib,test} & jshint . --exclude-path .gitignore",
+    "mocha": "mocha 'test/**/*.test.js' --report spec --harmony",
+    "cov": "node --harmony node_modules/.bin/istanbul cover --report html ./node_modules/mocha/bin/_mocha -- 'test/**/*.test.js' --harmony --reporter list ",
+    "test": "jscs {*.js,lib,test} & jshint . --exclude-path .gitignore && node --harmony node_modules/.bin/istanbul cover --report html ./node_modules/mocha/bin/_mocha -- 'test/**/*.test.js' --harmony --reporter dot "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:threeday0905/xconf.git"
+  },
+  "keywords": [
+    "config",
+    "xconfig",
+    "conf",
+    "json"
+  ],
+  "author": "Herman Lee <threeday0905@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/threeday0905/xconf/issues"
+  },
+  "homepage": "https://github.com/threeday0905/xconf",
+  "devDependencies": {
+    "chai": "*",
+    "istanbul": "*",
+    "jscs": "*",
+    "jshint": "*",
+    "mocha": "*",
+    "rewire": "*"
+  }
+}
