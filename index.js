@@ -1,78 +1,18 @@
 'use strict';
 
-var utils  = require('@ali/midway-utils'),
+var utils  = require('lodash'),
     expect = require('args-expect'),
-    logger = require('../logger'),
-    path   = utils.path;
+    parser = require('obj-parser'),
+    path   = require('path'),
+    logger = require('../logger');
 
-var configUtil = require('../utils/config-util'),
-    commonUtil = require('../utils/common-util');
+var configUtil = require('../utils/config-util');
 
 /**
  *  If any property start with this string, will load external file
  *  @constant
  */
 var CONF_START = 'conf:';
-
-/**
- *  Global Config
- *  @constructor
- *  @param {object} fields - base fields
- */
-function Global(fields) {
-    fields = fields || {};
-
-    var protectFields = Object.keys(fields);
-    utils.extend(this, utils.clone(fields));
-
-    Object.defineProperties(this, {
-        update: {
-            enumerable:   false,
-            writable:     false,
-            configurable: false,
-
-            value: function(data) {
-                data = utils.isPlainObject(data) ? utils.clone(data) : {};
-
-                /** should not overwrite init fields */
-                utils.each(protectFields, function(protectPropName) {
-                    if (data[protectPropName]) {
-                        delete data[protectPropName];
-                        logger.warn(
-                            '[config] should not overwrite global field: %s' +
-                            ', ignore global update process', protectPropName);
-                    }
-                });
-
-                /** should not add dynamic replacer into global */
-                commonUtil.replaceAllStrProps(data, function(prop) {
-                    return commonUtil.parseString(prop, function(match, name) {
-                        var breakValue = '__' + name + '__';
-                        logger.warn(
-                            '[config] global fields not allow dynamic replacer: %s' +
-                            ', break to: %s', match, breakValue);
-                        return breakValue;
-                    });
-                });
-
-                /** mixin data on this */
-                commonUtil.extendAllProps(this, data);
-                return this;
-            }
-        },
-        pullout: {
-            enumerable:   false,
-            writable:     false,
-            configurable: false,
-            value: function(data) {
-                if (data && data.global) {
-                    this.update(data.global);
-                    delete data.global;
-                }
-            }
-        }
-    });
-}
 
 /**
  *  Config
@@ -132,7 +72,7 @@ function Config(info) {
         global.pullout(singleConfObj);
 
         /** trans conf://path into a relatedConf object */
-        return commonUtil.replaceAllMatchProps(singleConfObj, function(prop) {
+        return parser.replaceAllMatchProps(singleConfObj, function(prop) {
             return utils.isString(prop) && (prop.lastIndexOf(CONF_START, 0) === 0);
         }, function(prop) {
             return {
@@ -147,22 +87,22 @@ function Config(info) {
 
     /** 3. merge single config object into config hoster */
     function replaceRelatedConfModule(configHoster, callback) {
-        commonUtil.replaceAllMatchProps(configHoster, function(prop) {
+        parser.replaceAllMatchProps(configHoster, function(prop) {
             return prop && prop._isRelatedConf;
         }, callback);
     }
     function mergeSingleConfig(configHoster, singleConfObj) {
         /** the special code for relatedConf object  */
         replaceRelatedConfModule(configHoster, function(prop, propKey, propPath) {
-            var samePathValue = commonUtil.getPropByPath(singleConfObj, propPath);
+            var samePathValue = parser.getPropByPath(singleConfObj, propPath);
             /** if singleConfObj has the same path value then merge it */
             if (samePathValue) {
                 /** clear this value from singleConfObj */
-                commonUtil.setPropByPath(singleConfObj, propPath, undefined);
+                parser.setPropByPath(singleConfObj, propPath, undefined);
 
                 /** if the value is an object, then merge into otherField */
                 if (utils.isObject(samePathValue)) {
-                    commonUtil.extendAllProps(prop.otherFields, samePathValue);
+                    parser.extendAllProps(prop.otherFields, samePathValue);
                 } else {
                 /** if the value is not object, then replace relatedConfObj */
 
@@ -177,7 +117,7 @@ function Config(info) {
         });
 
         /** merge all singelConfObj into configHoster */
-        commonUtil.extendAllProps(configHoster, singleConfObj);
+        parser.extendAllProps(configHoster, singleConfObj);
     }
 
     /** 4. once all config has been merged into config hoster, then call this method */
@@ -185,7 +125,7 @@ function Config(info) {
         expect(configHoster).isObject();
 
         /** inject confObj into confObj prop, if it has the replacer like {{xxx}} */
-        commonUtil.parseObject(configHoster, global);
+        parser.parseObject(configHoster, global);
 
         /** the special code for relatedConf object  */
         replaceRelatedConfModule(configHoster, function(prop) {
@@ -208,10 +148,10 @@ function Config(info) {
             });
 
             /** if there are any otehrFields form other config object, merge it */
-            commonUtil.extendAllProps(relatedConf, prop.otherFields);
+            parser.extendAllProps(relatedConf, prop.otherFields);
 
             /** parse all fields with global, if it is contains dynamic replacer */
-            commonUtil.parseObject(relatedConf, global);
+            parser.parseObject(relatedConf, global);
 
             /** record original path, it has been used by model-dataproxy */
             Object.defineProperty(relatedConf, '_originalPath', {
@@ -296,13 +236,3 @@ function Config(info) {
 exports.create = function createConfig(info) {
     return new Config(info);
 };
-
-// export private class for testing
-utils.test.runIfActive(function(helper) {
-    helper.createSpace(exports, '_private')
-        .withMethods({
-            createGlobal: function(fields) {
-                return new Global(fields);
-            }
-        });
-});

@@ -31,10 +31,13 @@
     "jscs": "*",
     "jshint": "*",
     "mocha": "*",
-    "rewire": "*"
+    "rewire": "*",
+    "sinon": "*"
   },
   "dependencies": {
+    "args-expect": "~0.2.1",
+    "lodash": "~2.4.1",
     "obj-parser": "~0.1.0",
-    "args-expect": "~0.2.1"
+    "path-tools": "~0.1.0"
   }
 }
