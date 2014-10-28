@@ -4,20 +4,20 @@ var expect = require('chai').expect,
     sinon  = require('sinon'),
     path   = require('path');
 
-describe('xconfig.js', function() {
+describe('perrier.js', function() {
     /* jshint -W024, -W030 */
 
-    var XConfig = require('../index'),
+    var Perrier = require('../index'),
         getSupportFile = function(name) {
-            return path.join(__dirname, 'supports/xconfig', name);
+            return path.join(__dirname, 'supports/config', name);
         };
 
     var config;
 
     describe('init()', function() {
         it('has two way to init', function() {
-            var conf1 = new XConfig(),
-                conf2 = XConfig.create();
+            var conf1 = new Perrier(),
+                conf2 = Perrier.create();
 
             conf1.merge({ foo: 1 });
             conf2.merge({ foo: 1 });
@@ -28,7 +28,7 @@ describe('xconfig.js', function() {
 
     describe('getFields()', function() {
         beforeEach(function() {
-            config = new XConfig();
+            config = new Perrier();
         });
 
         it('should get undefined, if field is not exist', function() {
@@ -46,7 +46,7 @@ describe('xconfig.js', function() {
 
     describe('getGlobal()', function() {
         beforeEach(function() {
-            config = new XConfig({
+            config = new Perrier({
                 globalFields: {
                     NODE_ENV: 'production'
                 }
@@ -68,7 +68,7 @@ describe('xconfig.js', function() {
 
     describe('merge()', function() {
         beforeEach(function() {
-            config = new XConfig({
+            config = new Perrier({
                 rootPath: __dirname,
                 globalFields: {
                     NODE_ENV: 'production'
@@ -207,7 +207,7 @@ describe('xconfig.js', function() {
 
             config.merge(
                 getSupportFile('merge-first'), /* ignore extname */
-                './supports/xconfig/merge-second.conf', /* relative path*/
+                './supports/config/merge-second.conf', /* relative path*/
                 {
                     third: 3 /* annonymous object */
                 },
@@ -251,7 +251,7 @@ describe('xconfig.js', function() {
 
     describe('load external file, ', function() {
         beforeEach(function() {
-            config = new XConfig({
+            config = new Perrier({
                 confFlag: 'conf:',
                 rootPath: __dirname,
                 globalFields: {
@@ -305,7 +305,7 @@ describe('xconfig.js', function() {
 
             it('supports relative path', function() {
                 config.merge({
-                    data: 'conf:./supports/xconfig/sample.conf'
+                    data: 'conf:./supports/config/sample.conf'
                 });
 
                 expect(config).to.deep.equal({
@@ -320,7 +320,7 @@ describe('xconfig.js', function() {
 
     describe('error handling', function() {
         beforeEach(function() {
-            config = new XConfig({
+            config = new Perrier({
                 rootPath: __dirname
             });
         });
@@ -350,7 +350,7 @@ describe('xconfig.js', function() {
         describe('deal with recursive "conf:" flag', function() {
             it(' defined on related file', function() {
                 config.merge({
-                    data: 'conf: ./supports/xconfig/case-related-other.conf'
+                    data: 'conf: ./supports/config/case-related-other.conf'
                 });
 
                 expect(config).to.deep.equal({
@@ -363,11 +363,11 @@ describe('xconfig.js', function() {
             it(' defined on oteher fields', function() {
                 config.merge(
                 {
-                    data: 'conf: ./supports/xconfig/sample.conf'
+                    data: 'conf: ./supports/config/sample.conf'
                 },
                 {
                     data: {
-                        baz: 'conf: ./supports/xconfig/sample.conf'
+                        baz: 'conf: ./supports/config/sample.conf'
                     }
                 });
 
@@ -375,7 +375,7 @@ describe('xconfig.js', function() {
                     data: {
                         foo: 1,
                         bar: 2,
-                        baz: 'conf: ./supports/xconfig/sample.conf'
+                        baz: 'conf: ./supports/config/sample.conf'
                     }
                 });
             });

@@ -3,18 +3,18 @@
 var expect = require('chai').expect,
     path   = require('path');
 
-describe('xconfig.js / private methods', function() {
+describe('perrier.js / private methods', function() {
     /* jshint -W024, -W030 */
 
-    var XConfig = require('../index'),
+    var Perrier = require('../index'),
         getSupportFile = function(name) {
-            return path.join(__dirname, 'supports/xconfig', name);
+            return path.join(__dirname, 'supports/config', name);
         };
 
     var config;
 
     beforeEach(function() {
-        config = new XConfig({
+        config = new Perrier({
             test: true, /* special config to export private methos */
             rootPath: __dirname,
             globalFields: {
@@ -74,7 +74,7 @@ describe('xconfig.js / private methods', function() {
             });
 
             it('can load relative file', function() {
-                var confPath = './supports/xconfig/sample.conf',
+                var confPath = './supports/config/sample.conf',
                     result = loadConfig(confPath);
 
                 expect(result.data).to.deep.equal({
@@ -280,7 +280,7 @@ describe('xconfig.js / private methods', function() {
                 config.foo = {
                     _RelatedConf: true,
                     realtedDir:   __dirname,
-                    relatedPath:  './supports/xconfig/sample.conf',
+                    relatedPath:  './supports/config/sample.conf',
                     otherFields:  {}
                 };
 
@@ -297,7 +297,7 @@ describe('xconfig.js / private methods', function() {
                     foo: {
                         _RelatedConf: true,
                         realtedDir:   __dirname,
-                        relatedPath:  './supports/xconfig/sample.conf',
+                        relatedPath:  './supports/config/sample.conf',
                         otherFields:  {
                             a: 1
                         }
@@ -347,7 +347,7 @@ describe('xconfig.js / private methods', function() {
                 config.foo = {
                     _RelatedConf: true,
                     realtedDir:   __dirname,
-                    relatedPath:  './supports/xconfig/sample.conf',
+                    relatedPath:  './supports/config/sample.conf',
                     otherFields:  {}
                 };
             });
@@ -390,7 +390,7 @@ describe('xconfig.js / private methods', function() {
                 config.rebuildHoster();
 
                 expect(config.foo._originalPath).to.equal(
-                    path.resolve(__dirname, './supports/xconfig/sample.conf')
+                    path.resolve(__dirname, './supports/config/sample.conf')
                 );
             });
 
@@ -398,7 +398,7 @@ describe('xconfig.js / private methods', function() {
                 config.bar = {
                     _RelatedConf: true,
                     realtedDir:   __dirname,
-                    relatedPath:  './supports/xconfig/non-exist.conf',
+                    relatedPath:  './supports/config/non-exist.conf',
                     otherFields:  {}
                 };
 

@@ -1,7 +1,7 @@
 {
-  "name": "xconf",
+  "name": "perrier",
   "version": "0.1.0",
-  "description": "powerful config generator (based on json)",
+  "description": "powerful config loader (based on json)",
   "main": "index.js",
   "scripts": {
     "hint": "jscs {*.js,lib,test} & jshint . --exclude-path .gitignore",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:threeday0905/xconf.git"
+    "url": "git@github.com:threeday0905/perrier.git"
   },
   "keywords": [
     "config",
@@ -22,9 +22,9 @@
   "author": "Herman Lee <threeday0905@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/threeday0905/xconf/issues"
+    "url": "https://github.com/threeday0905/perrier/issues"
   },
-  "homepage": "https://github.com/threeday0905/xconf",
+  "homepage": "https://github.com/threeday0905/perrier",
   "devDependencies": {
     "chai": "*",
     "istanbul": "*",

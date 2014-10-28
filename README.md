@@ -1,6 +1,6 @@
-XConf
+Perrier
 =============
-`xconf` is a powerful config loader, which can use to load multi external config file, and merge to one JS object for large Node.js application uses.
+`perrier` is a powerful JSON loader, which can use to load multi external config file, and merge to one JS object for large Node.js application uses.
 
 
 ---
@@ -20,7 +20,7 @@ XConf
 
 **app.js**
 
-    var config = require('xconf').create();
+    var config = require('perrier').create();
     config.merge({
         './config/foo.json',
         './config/bar.json', 
@@ -60,7 +60,7 @@ XConf
     
 **app.js**
 
-    var config = require('xconf').create();
+    var config = require('perrier').create();
     config.merge({
         './config/sample.json'
     });
@@ -77,7 +77,7 @@ and you no longer need to add double quotes on JSON file.  (more like JavaScript
 **config/production.json**
 
     {
-        // global is reserved xconf field, which will be render source
+        // global is reserved CONFIG field, which will be render source for ruture merge
         global: {
             NODE_ENV: 'production',
             LOG_LEVEL: 'info'
@@ -95,7 +95,7 @@ and you no longer need to add double quotes on JSON file.  (more like JavaScript
     
 **app.js**
 
-    var config = require('xconf').create();
+    var config = require('perrier').create();
     config.merge({
         './config/production.json',
         './config/logger.json'
@@ -127,7 +127,7 @@ so that you can change the first arg in different environment, but keep same log
     
 **app.js**
 
-    var config = require('xconf').create();
+    var config = require('perrier').create();
     config.merge({
         './config/main.json'
     });
@@ -152,7 +152,7 @@ this feature also supports template render, you can add *{{key}}* in anywhere.
     
 **app.js**
 
-    var config = require('xconf').create();
+    var config = require('perrier').create();
     config.merge({
         './config/main.json', 
         {
@@ -170,7 +170,7 @@ loader supports file path and plain object, all of those will be merged in seque
 
 **app.js**
 
-    var config = require('xconf').create();
+    var config = require('perrier').create();
     
     function monitor(err, index, fileName) {
         console.log(arguments);
@@ -187,7 +187,7 @@ Engine will load config silently, but you can add a monitor function, it will be
 ---
 ### APIs
 
-#### require('xconf').create( options )
+#### perrier.create( options )
 
 - options.rootPath {String} - all config file will be resolved with root path. (default: process.cwd() )
 - options.globalFields {Object} - default template source (optional)
@@ -200,17 +200,19 @@ Example
     }
 
     // app.js
-    var conf = xconf.create({
+    var perrier = require('perrier');
+
+    var config = perrier.create({
         rootPath: path.join(__dirname, 'config'),
         globalFields: {
             NODE_ENV: process.env.NODE_ENV || 'development'
         }
     });
     
-    conf.merge('base.json'); // base.json will be resolved to __dirame/config/base.json
-    console.log(conf); // { server: 'development' }
+    config.merge('base.json'); // base.json will be resolved to __dirame/config/base.json
+    console.log(config); // { server: 'development' }
     
-init method, you can also call ` var XConf = require('xconf'); new XConf();`
+init method, you can also call ` var Perrier = require('perrier'); new Perrier();`
     
 #### merge( source1, source2, ... [, monitor ])
 
@@ -225,7 +227,7 @@ return config.filedName or undefined
 
 Example
     
-    conf.getField('logger');
+    config.getField('logger');
     
 #### getGlobal()
 
@@ -233,7 +235,7 @@ return global fields ( the template source )
 
 Example
 
-    conf.getGlobal();
+    config.getGlobal();
     
     
 ---
