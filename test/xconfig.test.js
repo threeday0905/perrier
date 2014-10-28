@@ -140,7 +140,7 @@ describe('xconfig.js', function() {
             });
         });
 
-        it('external conf can use later global fields', function() {
+        it('can parser replacer non-sequential on one merge', function() {
             config.merge(
                 // 1. this arg require global fields
                 getSupportFile('case-related-other.conf'),
@@ -151,6 +151,27 @@ describe('xconfig.js', function() {
                     }
                 }
             );
+
+            expect(config).to.deep.equal({
+                foo: {
+                    name:   'foo bar',
+                    status: 'production'
+                }
+            });
+        });
+
+        it('can parser replacer non-sequential on two merge', function() {
+            config.merge(
+                // 1. this arg require global fields
+                getSupportFile('case-related-other.conf')
+            );
+
+            config.merge({
+                global: { //2. defined global fields on second args
+                    FIRST_NAME: 'foo',
+                    LAST_NAME:  'bar'
+                }
+            });
 
             expect(config).to.deep.equal({
                 foo: {
