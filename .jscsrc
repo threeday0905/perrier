@@ -12,8 +12,6 @@
 
     "requireMultipleVarDecl": null,
 
-    "safeContextKeyword": ["that", "self"],
-
     "validateJSDoc": {
         "checkParamNames":      true,
         "checkRedundantParams": true,
