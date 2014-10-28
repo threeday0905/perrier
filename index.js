@@ -1,1 +1,1 @@
-module.exports = require('./lib/xconfig');
+module.exports = require('./lib/perrier');
