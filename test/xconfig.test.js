@@ -14,6 +14,18 @@ describe('xconfig.js', function() {
 
     var config;
 
+    describe('init()', function() {
+        it('has two way to init', function() {
+            var conf1 = new XConfig(),
+                conf2 = XConfig.create();
+
+            conf1.merge({ foo: 1 });
+            conf2.merge({ foo: 1 });
+
+            expect(conf1).to.deep.equal(conf2);
+        });
+    });
+
     describe('getFields()', function() {
         beforeEach(function() {
             config = new XConfig();
@@ -57,6 +69,7 @@ describe('xconfig.js', function() {
     describe('merge()', function() {
         beforeEach(function() {
             config = new XConfig({
+                rootPath: __dirname,
                 globalFields: {
                     NODE_ENV: 'production'
                 }
@@ -146,6 +159,73 @@ describe('xconfig.js', function() {
                 }
             });
         });
+
+        it('can use monitor method to observe load process (1)', function() {
+            var monitor = sinon.stub();
+
+            var firstPath = getSupportFile('merge-first.conf'),
+                secondPath = getSupportFile('merge-second.conf');
+
+            config.merge(
+                firstPath, secondPath,
+                monitor /* latest arg can be a monitor method*/
+            );
+
+            var firstCall = monitor.firstCall,
+                secondCall = monitor.secondCall;
+
+            expect(firstCall.calledWith(  null, 0, firstPath)).to.be.true;
+            expect(secondCall.calledWith( null, 1, secondPath)).to.be.true;
+        });
+
+        it('can use monitor method to observe load process (2)', function() {
+            var monitor = sinon.stub();
+
+            var firstPath = getSupportFile('merge-first.conf'),
+                secondPath = getSupportFile('merge-second.conf');
+
+            config.merge(
+                getSupportFile('merge-first'), /* ignore extname */
+                './supports/xconfig/merge-second.conf', /* relative path*/
+                {
+                    third: 3 /* annonymous object */
+                },
+                monitor /* latest arg can be a monitor method*/
+            );
+
+            var firstCall  = monitor.firstCall,
+                secondCall = monitor.secondCall,
+                thirdCall  = monitor.thirdCall;
+
+            expect(firstCall.calledWith(  null, 0, firstPath)).to.be.true;
+            expect(secondCall.calledWith( null, 1, secondPath)).to.be.true;
+            expect(thirdCall.calledWith(  null, 2, 'anonymous')).to.be.true;
+        });
+
+        it('can use monitor method to observe load process (3)', function() {
+            var monitor = sinon.stub();
+
+            config.merge(
+                getSupportFile('merge-first.conf'),
+                getSupportFile('non-exist.conf'),
+                monitor /* latest arg can be a monitor method*/
+            );
+
+            var err = monitor.secondCall.args[0];
+            expect(err).to.be.instanceof(Error);
+            expect(err.code).to.equal('MODULE_NOT_FOUND');
+            expect(err.message).to.contain('non-exist');
+        });
+
+        it('can use monitor method to observe load process (4)', function() {
+            var monitor = sinon.stub();
+
+            config.merge(123, monitor);
+
+            var err = monitor.firstCall.args[0];
+            expect(err).to.be.instanceof(Error);
+            expect(err.message).to.contain('non-supported type');
+        });
     });
 
     describe('load external file, ', function() {
@@ -225,7 +305,6 @@ describe('xconfig.js', function() {
         });
 
         it('can handle related file overwritten', function() {
-            sinon.stub(console, 'warn');
             config.merge(
                 getSupportFile('merge-first.conf'),
                 {
@@ -234,8 +313,6 @@ describe('xconfig.js', function() {
             );
 
             expect(config.external).to.equal('overwrite');
-            expect(console.warn.called).to.be.true;
-            console.warn.restore();
         });
 
         it('can handle global-not-exists error', function() {
