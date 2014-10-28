@@ -5,7 +5,7 @@ var globalFieldFactory = require('../lib/global-field');
 var expect = require('chai').expect,
     sinon  = require('sinon');
 
-describe('modules/config [Global]', function() {
+describe('global-field.js', function() {
     /* jshint -W024, -W030 */
     var globalField, defaultValue;
 

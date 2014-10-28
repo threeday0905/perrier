@@ -11,13 +11,13 @@ describe('conf-loader.js', function() {
 
     var normalize = path.normalize,
         getSupportFile = function(name) {
-            return path.join(__dirname, 'supports', name);
+            return path.join(__dirname, 'supports/conf-loader', name);
         };
 
-    describe('parsePath()', function() {
+    describe('resolve()', function() {
         var isWindows = /^win/.test(process.platform);
 
-        var parsePath = confLoader.parsePath;
+        var resolve = confLoader.resolve;
 
         describe('windows platform', function() {
             if (!isWindows) {
@@ -36,35 +36,35 @@ describe('conf-loader.js', function() {
             });
 
             it('should return directly, if file name is full', function() {
-                var result = parsePath('C:\\home\\midway\\config\\base.conf', appPath),
+                var result = resolve('C:\\home\\midway\\config\\base.conf', appPath),
                     expectPath = normalize('C:\\home\\midway\\config\\base.conf');
 
                 expect(result).to.equal(expectPath);
             });
 
             it('should resolve with rootPath, if file name is relative', function() {
-                var result = parsePath('./config/base.conf', appPath),
+                var result = resolve('./config/base.conf', appPath),
                     expectPath = normalize('C:\\home\\midway\\config\\base.conf');
 
                 expect(result).to.equal(expectPath);
             });
 
             it('should add extname, if extname not provided', function() {
-                var result = parsePath('./config/base', appPath),
+                var result = resolve('./config/base', appPath),
                     expectPath = normalize('C:\\home\\midway\\config\\base.conf');
 
                 expect(result).to.equal(expectPath);
             });
 
             it('should keep extname, if extname is not ".conf"', function() {
-                var result = parsePath('./config/base.json', appPath),
+                var result = resolve('./config/base.json', appPath),
                     expectPath = normalize('C:\\home\\midway\\config\\base.json');
 
                 expect(result).to.equal(expectPath);
             });
 
             it('should resolve with cwd, if rootPath not provided', function() {
-                var result = parsePath('./config/base.conf'),
+                var result = resolve('./config/base.conf'),
                     expectPath = normalize('C:\\home\\midway\\cwd\\config\\base.conf');
 
                 expect(result).to.equal(expectPath);
@@ -88,34 +88,34 @@ describe('conf-loader.js', function() {
             });
 
             it('should directly return, if file name is full', function() {
-                var result = parsePath('/home/midway/config/base.conf', appPath);
+                var result = resolve('/home/midway/config/base.conf', appPath);
                 expect(result).to.equal('/home/midway/config/base.conf');
             });
 
             it('should resolve with rootPath, if file name is relative', function() {
-                var result = parsePath('./config/base.conf', appPath);
+                var result = resolve('./config/base.conf', appPath);
                 expect(result).to.equal('/home/midway/config/base.conf');
             });
 
             it('should add extname, if extname not provided', function() {
-                var result = parsePath('./config/base', appPath);
+                var result = resolve('./config/base', appPath);
                 expect(result).to.equal('/home/midway/config/base.conf');
             });
 
             it('should keep extname, if expect is not ".conf"', function() {
-                var result = parsePath('./config/base.json', appPath);
+                var result = resolve('./config/base.json', appPath);
                 expect(result).to.equal('/home/midway/config/base.json');
             });
 
             it('should resolve with cwd, if rootPath not provided', function() {
-                var result = parsePath('./config/base.conf');
+                var result = resolve('./config/base.conf');
                 expect(result).to.equal('/home/midway/cwd/config/base.conf');
             });
         });
     });
 
-    describe('loadXConf()', function() {
-        var loadXConf = confLoader.loadXConf;
+    describe('loadXJSON()', function() {
+        var loadXJSON = confLoader.loadXJSON;
 
         var confSample = {
                 a: '1',
@@ -126,34 +126,34 @@ describe('conf-loader.js', function() {
             };
 
         it('can parse json file', function() {
-            var result = loadXConf(getSupportFile('sample.json'));
+            var result = loadXJSON(getSupportFile('sample.json'));
             expect(result).to.deep.equal(confSample);
         });
 
         it('can parse json-like conf file', function() {
-            var result = loadXConf(getSupportFile('sample.conf'));
+            var result = loadXJSON(getSupportFile('sample.conf'));
             expect(result).to.deep.equal(confSample);
         });
 
         it('can parse json-with-comment conf file', function() {
-            var result = loadXConf(getSupportFile('json-with-comment.conf'));
+            var result = loadXJSON(getSupportFile('json-with-comment.conf'));
             expect(result).to.deep.equal(confSample);
         });
 
         it('can parse json-with-jsexp conf file', function() {
-            var result = loadXConf(getSupportFile('json-with-jsexp.conf'));
+            var result = loadXJSON(getSupportFile('json-with-jsexp.conf'));
             expect(result).to.deep.equal(confSample);
         });
 
         it('can parse conf with function', function() {
-            var result = loadXConf(getSupportFile('json-with-fn.conf'));
+            var result = loadXJSON(getSupportFile('json-with-fn.conf'));
             expect(result.fn()).to.equal(1);
         });
 
         it('can throw MODULE_PARSE_FAILED error if file has error format', function() {
             var result, ex;
             try {
-                result = loadXConf(getSupportFile('syntax-error.conf'));
+                result = loadXJSON(getSupportFile('syntax-error.conf'));
             } catch (e) {
                 ex = e;
             }
@@ -166,7 +166,7 @@ describe('conf-loader.js', function() {
         it('can throw MODULE_NOT_FOUND error, if file is not exists', function() {
             var result, ex;
             try {
-                result = loadXConf(getSupportFile('file-not-exists.conf'));
+                result = loadXJSON(getSupportFile('file-not-exists.conf'));
             } catch (e) {
                 ex = e;
             }
@@ -177,7 +177,7 @@ describe('conf-loader.js', function() {
         });
 
         it('can remove bom', function() {
-            var result = loadXConf(getSupportFile('utf8-bom.conf'));
+            var result = loadXJSON(getSupportFile('utf8-bom.conf'));
             expect(result).to.exist;
         });
     });
