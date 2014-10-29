@@ -29,7 +29,15 @@ Perrier
         }
     });
 
-    console.log(config); // { foo: 1, bar: 2, baz: 3 }
+    console.log(config); 
+
+** OUTPUT **
+
+    { 
+        foo: 1, 
+        bar: 2, 
+        baz: 3 
+    }
 
 ---
 ### Why We Need This Tool
@@ -61,20 +69,27 @@ Perrier
 **app.js**
 
     var config = require('perrier').create();
-    config.merge({
-        './config/sample.json'
-    });
+    config.merge( './config/sample.json' );
+    
     console.log( config ) );
-    // { event: 'archive', rule: /warn/, 'interval': 60000 }
+    
+** OUTPUT **
+
+    { 
+        event: 'archive', 
+        rule: /warn/, 
+        interval: 60000
+    }
     
 Supported **comment** / **calculate** on JSON file.
 
+---
 #### 2. Template Replace
 
 **config/production.json**
 
     {
-        // global is reserved CONFIG field, which will be render source for ruture merge
+        // global is reserved CONFIG field, which will be render source for Future merge
         global: {
             NODE_ENV: 'production',
             LOG_LEVEL: 'info'
@@ -93,18 +108,26 @@ Supported **comment** / **calculate** on JSON file.
 **app.js**
 
     var config = require('perrier').create();
-    config.merge({
+    config.merge(
         './config/production.json',
         './config/logger.json'
-    });
+    );
     console.log( config ) );
-    // { logger: {  logPath: '/home/logs/production.log', logLevel: 'info+error' }
+    
+** OUTPUT **
+    
+    { 
+        logger: {  
+            logPath: '/home/logs/production.log', 
+            logLevel: 'info+error' 
+        }
+    }
     
 The **global** field will be template source, if any other field contains *{{key}}*, it will be replaced with corresponding content.
 
 So that you can change the first arg in different environment, but keep same log config file.
 
-
+---
 #### 3. Link to Other Config
 
 **config/main.json**
@@ -119,17 +142,26 @@ So that you can change the first arg in different environment, but keep same log
 **config/foo.json**
 
     {
-        foo: true // which will be combined to main.json
+        foo: true // which will be combined into main.json
     }
     
 **app.js**
 
     var config = require('perrier').create();
-    config.merge({
-        './config/main.json'
-    });
+    config.merge( './config/main.json' );
+    
     console.log( config ) );
-    // { fooApp: { foo: true }, barApp: { bar: true } }
+    
+** OUTPUT **
+    
+    { 
+        fooApp: { 
+            foo: true 
+        }, 
+        barApp: { 
+            bar: true 
+        } 
+    }
     
 If any fields start with **conf:**, then the engine will try to load an external file and replace here.
 
@@ -137,7 +169,7 @@ So that you can decompose large files into multi config files, and do the flexib
 
 This feature also supports template render, you can add *{{key}}* in anywhere.
     
-
+---
 #### 4. Runtime Config
 
 **config/main.json**
@@ -150,19 +182,26 @@ This feature also supports template render, you can add *{{key}}* in anywhere.
 **app.js**
 
     var config = require('perrier').create();
-    config.merge({
+    config.merge(
         './config/main.json', 
         {
             maxSocks: 10
         }
-    });
+    );
     console.log( config ) );
-    // { type: 'http', maxSocks: 10 }
+    
+** OUTPUT **
+    
+    { 
+        type: 'http', 
+        maxSocks: 10 
+    }
     
 You can load a static file, and overwrite with runtime config if you need. 
 
 Loader supports file path / plain object, all of those will be merged in sequentially.
 
+---
 #### 5. Monitor Method
 
 **app.js**
@@ -206,7 +245,7 @@ Example
         }
     });
     
-    config.merge('base.json'); // base.json will be resolved to __dirame/config/base.json
+    config.merge('base.json'); // base.json will be converted to "__dirame/config/base.json""
     console.log(config); // { server: 'development' }
     
 init method, you can also call ` var Perrier = require('perrier'); new Perrier();`
