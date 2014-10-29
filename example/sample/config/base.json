@@ -1,0 +1,14 @@
+{
+    /* this is base config */
+
+    "global": {
+        "LOG_FILE": "nodejs.log"
+    },
+
+    "interface": "conf: ./interface.json", /* link to interface.json */
+
+    "logger": {
+        /* LOG_FOLDER is defined on {production|development} config */
+        "logPath": "{{LOG_FOLDER}}/{{LOG_FILE}}"
+    }
+}
