@@ -1,6 +1,6 @@
 Perrier
 =============
-`perrier` is a powerful JSON loader, which can use to load multi external config file, and merge to one JS object for large Node.js application uses.
+`Perrier` is a powerful JSON loader, which can use to load multi external config file, and merge to one JS object for large Node.js application uses.
 
 
 ---
