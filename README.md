@@ -89,7 +89,7 @@ Supported **comment** / **expression** on JSON file.
 **config/production.json**
 
     {
-        // global is reserved CONFIG field, which will be render source for Future merge
+        // global is reserved CONFIG field, which will use to render template field on future merge
         global: {
             NODE_ENV: 'production',
             LOG_LEVEL: 'info'
