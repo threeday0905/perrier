@@ -81,7 +81,7 @@ Perrier
         interval: 60000
     }
     
-Supported **comment** / **calculate** on JSON file.
+Supported **comment** / **expression** on JSON file.
 
 ---
 #### 2. Template Replace
