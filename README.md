@@ -102,7 +102,7 @@ Supported **comment** / **calculate** on JSON file.
     
 The **global** field will be template source, if any other field contains *{{key}}*, it will be replaced with corresponding content.
 
-ｓo that you can change the first arg in different environment, but keep same log config file.
+So that you can change the first arg in different environment, but keep same log config file.
 
 
 #### 3. Link to Other Config
