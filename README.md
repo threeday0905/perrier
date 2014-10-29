@@ -31,7 +31,7 @@ Perrier
 
     console.log(config); 
 
-** OUTPUT **
+**OUTPUT**
 
     { 
         foo: 1, 
@@ -73,7 +73,7 @@ Perrier
     
     console.log( config ) );
     
-** OUTPUT **
+**OUTPUT**
 
     { 
         event: 'archive', 
@@ -114,7 +114,7 @@ Supported **comment** / **calculate** on JSON file.
     );
     console.log( config ) );
     
-** OUTPUT **
+**OUTPUT**
     
     { 
         logger: {  
@@ -152,7 +152,7 @@ So that you can change the first arg in different environment, but keep same log
     
     console.log( config ) );
     
-** OUTPUT **
+**OUTPUT**
     
     { 
         fooApp: { 
@@ -190,7 +190,7 @@ This feature also supports template render, you can add *{{key}}* in anywhere.
     );
     console.log( config ) );
     
-** OUTPUT **
+**OUTPUT**
     
     { 
         type: 'http', 
