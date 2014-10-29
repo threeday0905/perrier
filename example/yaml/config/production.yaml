@@ -1,0 +1,12 @@
+# it will only load on production server
+
+global:
+    # listen port#3333 on production server
+    WEB_PORT: 3333
+
+    # log file save to here on production server
+    LOG_FOLDER: /home/logs/prod
+
+logger:
+    # print error log on production server
+    "logLevel": "ERROR"

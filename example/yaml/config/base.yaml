@@ -1,0 +1,10 @@
+# this is base config
+global:
+    LOG_FILE: nodejs.log
+
+# link to interface.yaml
+interface: "conf: ./interface.yaml"
+
+# LOG_FOLDER is defined on {production|development} config
+logger:
+    logPath: "{{LOG_FOLDER}}/{{LOG_FILE}}"

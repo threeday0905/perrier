@@ -1,0 +1,11 @@
+# it will only load on development server
+global:
+    # listen port#2222 on development server
+    WEB_PORT: 2222
+
+    # log file save to here on development server
+    LOG_FOLDER: /home/logs/dev
+
+logger:
+    # print info log on development server
+    logLevel: INFO
