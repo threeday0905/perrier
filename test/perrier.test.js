@@ -181,71 +181,71 @@ describe('perrier.js', function() {
             });
         });
 
-        it('can use monitor method to observe load process (1)', function() {
-            var monitor = sinon.stub();
+        describe('monitor', function() {
+            var monitor;
+            beforeEach(function() {
+                monitor = sinon.stub();
+                config = new Perrier({
+                    monitor: monitor,
+                    rootPath: __dirname,
+                    globalFields: {
+                        NODE_ENV: 'production'
+                    }
+                });
+            });
+            it('can use monitor method to observe load process (1)', function() {
+                var firstPath = getSupportFile('merge-first.conf'),
+                    secondPath = getSupportFile('merge-second.conf');
 
-            var firstPath = getSupportFile('merge-first.conf'),
-                secondPath = getSupportFile('merge-second.conf');
+                config.merge( firstPath, secondPath );
 
-            config.merge(
-                firstPath, secondPath,
-                monitor /* latest arg can be a monitor method*/
-            );
+                var firstCall = monitor.firstCall,
+                    secondCall = monitor.secondCall;
 
-            var firstCall = monitor.firstCall,
-                secondCall = monitor.secondCall;
+                expect(firstCall.calledWith(  null, firstPath, 0)).to.be.true;
+                expect(secondCall.calledWith( null, secondPath, 1)).to.be.true;
+            });
 
-            expect(firstCall.calledWith(  null, 0, firstPath)).to.be.true;
-            expect(secondCall.calledWith( null, 1, secondPath)).to.be.true;
-        });
+            it('can use monitor method to observe load process (2)', function() {
+                var firstPath = getSupportFile('merge-first.conf'),
+                    secondPath = getSupportFile('merge-second.conf');
 
-        it('can use monitor method to observe load process (2)', function() {
-            var monitor = sinon.stub();
+                config.merge(
+                    getSupportFile('merge-first'), /* ignore extname */
+                    './supports/config/merge-second.conf', /* relative path*/
+                    {
+                        third: 3 /* annonymous object */
+                    }
+                );
 
-            var firstPath = getSupportFile('merge-first.conf'),
-                secondPath = getSupportFile('merge-second.conf');
+                var firstCall  = monitor.firstCall,
+                    secondCall = monitor.secondCall,
+                    thirdCall  = monitor.thirdCall;
 
-            config.merge(
-                getSupportFile('merge-first'), /* ignore extname */
-                './supports/config/merge-second.conf', /* relative path*/
-                {
-                    third: 3 /* annonymous object */
-                },
-                monitor /* latest arg can be a monitor method*/
-            );
+                expect(firstCall.calledWith(  null, firstPath, 0)).to.be.true;
+                expect(secondCall.calledWith( null, secondPath, 1)).to.be.true;
+                expect(thirdCall.calledWith(  null, 'anonymous', 2)).to.be.true;
+            });
 
-            var firstCall  = monitor.firstCall,
-                secondCall = monitor.secondCall,
-                thirdCall  = monitor.thirdCall;
+            it('can use monitor method to observe load process (3)', function() {
+                config.merge(
+                    getSupportFile('merge-first.conf'),
+                    getSupportFile('non-exist.conf')
+                );
 
-            expect(firstCall.calledWith(  null, 0, firstPath)).to.be.true;
-            expect(secondCall.calledWith( null, 1, secondPath)).to.be.true;
-            expect(thirdCall.calledWith(  null, 2, 'anonymous')).to.be.true;
-        });
+                var err = monitor.secondCall.args[0];
+                expect(err).to.be.instanceof(Error);
+                expect(err.code).to.equal('MODULE_NOT_FOUND');
+                expect(err.message).to.contain('non-exist');
+            });
 
-        it('can use monitor method to observe load process (3)', function() {
-            var monitor = sinon.stub();
+            it('can use monitor method to observe load process (4)', function() {
+                config.merge(123);
 
-            config.merge(
-                getSupportFile('merge-first.conf'),
-                getSupportFile('non-exist.conf'),
-                monitor /* latest arg can be a monitor method*/
-            );
-
-            var err = monitor.secondCall.args[0];
-            expect(err).to.be.instanceof(Error);
-            expect(err.code).to.equal('MODULE_NOT_FOUND');
-            expect(err.message).to.contain('non-exist');
-        });
-
-        it('can use monitor method to observe load process (4)', function() {
-            var monitor = sinon.stub();
-
-            config.merge(123, monitor);
-
-            var err = monitor.firstCall.args[0];
-            expect(err).to.be.instanceof(Error);
-            expect(err.message).to.contain('non-supported type');
+                var err = monitor.firstCall.args[0];
+                expect(err).to.be.instanceof(Error);
+                expect(err.message).to.contain('non-supported type');
+            });
         });
     });
 

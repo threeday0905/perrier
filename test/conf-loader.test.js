@@ -183,7 +183,7 @@ describe('conf-loader.js', function() {
     });
 
     describe('load()', function() {
-        var load   = confLoader.load;
+        var load = confLoader.load;
 
         var confSample = {
                 a: '1',
@@ -288,6 +288,13 @@ describe('conf-loader.js', function() {
                 expect(result1).is.exist;
                 expect(result2).is.exist;
                 expect(result3).is.exist;
+            });
+        });
+
+        describe('yaml', function() {
+            it('can load yaml', function() {
+                var result = load(getSupportFile('sample.yaml'));
+                expect(result).to.deep.equal(confSample);
             });
         });
     });
