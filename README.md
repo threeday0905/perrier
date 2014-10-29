@@ -36,7 +36,7 @@ Perrier
 
 
 #### Manage Config Easily
-- decompose large files into multi config files
+- decompose large config file into multi config files
 - combine different config files in different situations
 - merge multi config file in one shot
 
