@@ -1,12 +1,12 @@
 {
   "name": "perrier",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "powerful config loader (based on json)",
   "main": "index.js",
   "scripts": {
     "hint": "jscs {*.js,lib,test} & jshint . --exclude-path .gitignore",
     "mocha": "mocha 'test/**/*.test.js' --report spec --harmony",
-    "cov": "node --harmony node_modules/.bin/istanbul cover --report html ./node_modules/mocha/bin/_mocha -- 'test/**/*.test.js' --harmony --reporter list ",
+    "cov": "node --harmony node_modules/.bin/istanbul cover --report html ./node_modules/mocha/bin/_mocha -- 'test/**/*.test.js' --harmony --reporter dot ",
     "test": "jscs {*.js,lib,test} & jshint . --exclude-path .gitignore && node --harmony node_modules/.bin/istanbul cover --report html ./node_modules/mocha/bin/_mocha -- 'test/**/*.test.js' --harmony --reporter dot "
   },
   "repository": {
@@ -35,9 +35,9 @@
     "sinon": "*"
   },
   "dependencies": {
-    "args-expect": "~0.2.1",
-    "lodash": "~2.4.1",
-    "obj-parser": "~0.1.0",
-    "path-tools": "~0.1.0"
+    "args-expect": "0.2.1",
+    "lodash": "2.4.1",
+    "obj-parser": "0.2.0",
+    "path-tools": "0.2.0"
   }
 }
