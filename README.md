@@ -40,10 +40,10 @@ Perrier
 - combine different config files in different situations
 - merge multi config file in one shot
 
-#### Powerful JSONloader
+#### Powerful JSON Loader
 - you can leave comment on JSON file
 - you can add template string on JSON file, and replace automatically
-- you link other config file on JSON field, and load automatically
+- you can link other config file on JSON field, and load automatically
 
 ---
 ### Usage
@@ -67,10 +67,7 @@ Perrier
     console.log( config ) );
     // { event: 'archive', rule: /warn/, 'interval': 60000 }
     
-supported **comment** / **calculate** on JSON file.
-
-and you no longer need to add double quotes on JSON file.  (more like JavaScript)
-
+Supported **comment** / **calculate** on JSON file.
 
 #### 2. Template Replace
 
@@ -103,9 +100,9 @@ and you no longer need to add double quotes on JSON file.  (more like JavaScript
     console.log( config ) );
     // { logger: {  logPath: '/home/logs/production.log', logLevel: 'info+error' }
     
-the **global** field will be source, if any other field contains *{{key}}*, it will be replaced.
+The **global** field will be template source, if any other field contains *{{key}}*, it will be replaced with corresponding content.
 
-so that you can change the first arg in different environment, but keep same log config.
+ｓo that you can change the first arg in different environment, but keep same log config file.
 
 
 #### 3. Link to Other Config
@@ -134,11 +131,11 @@ so that you can change the first arg in different environment, but keep same log
     console.log( config ) );
     // { fooApp: { foo: true }, barApp: { bar: true } }
     
-if any fields start with **conf:**, then the engine will try to load an external file and replace here.
+If any fields start with **conf:**, then the engine will try to load an external file and replace here.
 
-so that you can decompose large files into multi config files, and do the flexible combinations.
+So that you can decompose large files into multi config files, and do the flexible combinations.
 
-this feature also supports template render, you can add *{{key}}* in anywhere.
+This feature also supports template render, you can add *{{key}}* in anywhere.
     
 
 #### 4. Runtime Config
@@ -162,9 +159,9 @@ this feature also supports template render, you can add *{{key}}* in anywhere.
     console.log( config ) );
     // { type: 'http', maxSocks: 10 }
     
-you can load a static file, and merge with runtime config if you need. 
+You can load a static file, and overwrite with runtime config if you need. 
 
-loader supports file path and plain object, all of those will be merged in sequentially.
+Loader supports file path / plain object, all of those will be merged in sequentially.
 
 #### 5. Monitor Method
 
