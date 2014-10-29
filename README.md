@@ -206,11 +206,13 @@ Loader supports file path / plain object, all of those will be merged in sequent
 
 **app.js**
 
-    var config = require('perrier').create();
-    
     function monitor(err, index, fileName) {
         console.log(arguments);
     }
+
+    var config = require('perrier').create({
+        monitor: monitor
+    });
     
     config.merge({
         './config/a.json', 
@@ -220,6 +222,12 @@ Loader supports file path / plain object, all of those will be merged in sequent
     
 Engine will load config silently, but you can add a monitor function, it will be called once every config merged.
 
+#### 6. Supported YAML
+
+**All feature supported on yaml format, see example**
+
+( must install "js-yaml" manually )
+
 ---
 ### APIs
 
@@ -227,6 +235,7 @@ Engine will load config silently, but you can add a monitor function, it will be
 
 - options.rootPath {String} - all config file will be resolved with root path. (default: process.cwd() )
 - options.globalFields {Object} - default template source (optional)
+- options.monitor {Function} - this fn will be called once every config merged
     
 Example
 
@@ -250,12 +259,10 @@ Example
     
 init method, you can also call ` var Perrier = require('perrier'); new Perrier();`
     
-#### merge( source1, source2, ... [, monitor ])
+#### merge( source1, [, source2, ..., sourceN ])
 
-See above usage.
+See above usage, or example
 
-- source {String|Object}
-- monitor {Function}
 
 #### getField( filedName )
 
@@ -272,12 +279,7 @@ return global fields ( the template source )
 Example
 
     config.getGlobal();
-    
-    
----
-### TODO
 
-- support **yml** / **ini** format.
 
 ---
 ### Questions?
