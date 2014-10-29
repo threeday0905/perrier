@@ -48,10 +48,13 @@ Perrier
 - combine different config files in different situations
 - merge multi config file in one shot
 
-#### Powerful JSON Loader
-- you can leave comment on JSON file
-- you can add template string on JSON file, and replace automatically
+#### Powerful JSON Format
+- you can leave **comment** on JSON file
+- you can add **template** string on JSON file, and replace automatically
 - you can link other config file on JSON field, and load automatically
+
+#### New Feature (added on v0.3.0)
+- supported **yaml** format
 
 ---
 ### Usage
@@ -224,7 +227,7 @@ Engine will load config silently, but you can add a monitor function, it will be
 
 #### 6. Supported YAML
 
-**All feature supported on yaml format, see example**
+**All feature supported on yaml format, see [example](https://github.com/threeday0905/perrier/tree/master/example/yaml)**
 
 ( must install "js-yaml" manually )
 
@@ -261,7 +264,7 @@ init method, you can also call ` var Perrier = require('perrier'); new Perrier()
     
 #### merge( source1, [, source2, ..., sourceN ])
 
-See above usage, or example
+See above usage, or [example](https://github.com/threeday0905/perrier/tree/master/example/sample)
 
 
 #### getField( filedName )
