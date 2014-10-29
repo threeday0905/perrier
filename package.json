@@ -1,7 +1,7 @@
 {
   "name": "perrier",
-  "version": "0.2.0",
-  "description": "powerful config loader (based on json)",
+  "version": "0.3.0",
+  "description": "Powerful config loader (based on json)",
   "main": "index.js",
   "scripts": {
     "hint": "jscs {*.js,lib,test} & jshint . --exclude-path .gitignore",
@@ -17,7 +17,8 @@
     "config",
     "xconfig",
     "conf",
-    "json"
+    "json",
+    "yaml"
   ],
   "author": "Herman Lee <threeday0905@gmail.com>",
   "license": "MIT",
@@ -28,6 +29,7 @@
   "devDependencies": {
     "chai": "*",
     "istanbul": "*",
+    "js-yaml": "^3.2.2",
     "jscs": "*",
     "jshint": "*",
     "mocha": "*",
