@@ -1,6 +1,6 @@
 {
   "name": "perrier",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Powerful config loader (based on json)",
   "main": "index.js",
   "scripts": {
