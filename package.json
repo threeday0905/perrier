@@ -1,6 +1,6 @@
 {
   "name": "perrier",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Powerful config loader (based on json)",
   "main": "index.js",
   "scripts": {
@@ -29,7 +29,7 @@
   "devDependencies": {
     "chai": "*",
     "istanbul": "*",
-    "js-yaml": "^3.2.2",
+    "js-yaml": "*",
     "jscs": "*",
     "jshint": "*",
     "mocha": "*",
